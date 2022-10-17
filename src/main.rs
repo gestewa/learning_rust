@@ -1,30 +1,33 @@
-use std::io;
-use std::cmp::Ordering;
-use rand::Rng;
-
 fn main() {
-    let secret_number = rand::thread_rng().gen_range(1..=100);
+    // Const cannot be mutible
+    const THREE_HOURS_IN_SECONDS: u32 = 60 * 60 * 3;
 
-    loop {
-        println!("Please input your guess...");
-        let mut guess = String::new(); // String is UTF-8 encoded
-        let guess_size = io::stdin()
-            .read_line(&mut guess)// We could also use std::io::stdin() 
-            .expect("failed to read line");
-        
-        if guess_size>3{
-            println!("Your guess is {guess_size} bytes. Don't waste memory")
-        }
+    // Scopes and shadowing
+    // Shadowing allows us to change an immutible value
+    println!("The value of x is: {THREE_HOURS_IN_SECONDS}");
+    let x = 5;
 
-        let guess: u32 = match guess.trim().parse() {
-            Ok(num) => num,
-            Err(_) => {println!("This behavior is highly inappropriate."); continue;},
-        };
+    let x = x + 1;
 
-        match guess.cmp(&secret_number){
-            Ordering::Less => println!("Too small!"),
-            Ordering::Equal => { println!("You win!");break;},
-            Ordering::Greater => println!("Too big")
-        }
+    {
+        let x = x * 2;
+        println!("The value of x in the inner scope is: {x}"); // 12
     }
+
+    println!("The value of x is: {x}"); // 6
+
+    // Shadowing allows us to change type, mut does not
+    let spaces = "   ";
+    let spaces = spaces.len();
+    println!("Spaces {spaces}");
+
+    // e.g. not allowed
+    // let mut spaces = "   ";
+    // spaces = spaces.len();
+    
+    // Mutability demo
+    let mut x = 5;
+    println!("The value of x is: {x}"); // 5
+    x = 6;
+    println!("The value of x is: {x}"); // 6
 }
