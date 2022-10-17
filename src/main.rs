@@ -1,134 +1,59 @@
+fn a_function(x: i32) {
+    println!("The value of x is {x}");
+}
 fn main() {
-    //Scalar Types
-    
-    /*
-    
-    Int
-    
-        Length	Signed	Unsigned
-        -------------------------
-        8-bit	i8	    u8
-        16-bit	i16	    u16
-        32-bit	i32	    u32
-        64-bit	i64	    u64
-        128-bit	i128	u128
-        arch	isize	usize
+/* Functions
 
-        Note: isize and usize types depend on the architecture of the computer
-        your program is running on, which is denoted in the table as “arch”: 64
-        bits if you’re on a 64-bit architecture and 32 bits if you’re on a 
-        32-bit architecture.
-        
-        Note: The primary situation in which you’d use isize or usize is when 
-        indexing some sort of collection.
+    fn keyword declares new functions
+    Uses snake case as convention for function & variable names
+    Functions are a series of statements optionally ending in an expression
+    Statements are instructions that perform an action & do not return a value.
+    Expressions evaluate to a resulting value.
+*/
 
-        Number literal	Example
-        -----------------------------
-        Decimal	        98_222
-        Hex	            0xff
-        Octal	        0o77
-        Binary	        0b1111_0000
-        Byte (u8 only)   b'A'
+fn another_function() {
+    println!("Another function.");
+}
 
-        Handling overflow
-            * Wrap in all modes with the wrapping_* methods, such as wrapping_add
-            * Return the None value if there is overflow with the checked_* methods
-            * Return the value and a boolean indicating whether there was overflow
-                with the overflowing_* methods
-            * Saturate at the value’s minimum or maximum values with saturating_*
-                methods
-    */
- 
-    /* 
-    
-    Float
-    
-        Length	Signed	Unsigned
-        --------------------------
-        32-bit	f32	    N/A
-        64-bit	f64	    N/A
-        
-        Note: f64 is default b/c on modern CPUs it’s roughly the same speed as f32
-        but is capable of more precision.
-    
-    */
+a_function(321);
+another_function();
 
-    /* 
-    
-    Bool
-    
-        let t = true;
-        let f: bool = false; // with explicit type annotation
-    
-    */ 
-    
-    /* 
-    
-    Char
+/* 
+Statements
 
-        
-        Length
-        ---------
-        32-bit
+    Statements are instructions that perform an action & do not return a value.
+    Statements do not return values. 
+
+    let y = 6; // statement
+    fn main() { let y = 6; } // statement    
+    let x = (let y = 6); // ERROR cannot assign a statement to a statement
+
+Expressions 
+
+    Expressions evaluate to a resulting value.
+    Expressions do not include ending semicolons.
+    If you add a semicolon to the end of an expression, you turn it into a
+        statement, and it will then not return a value.
     
-        let c = 'z';
-        let z: char = 'ℤ'; // with explicit type annotation
-        let heart_eyed_cat = '😻';
+    5 + 6 // expression
+    6 // expression
+    { let x = 3; x + 1 } // expression
 
-        Note: char is a Unicode Scalar Value
-        
-        Note: Unicode Scalar Value ranges from U+0000 to U+D7FF and U+E000 to 
-            U+10FFFF inclusive.
- 
-        Note: Unicode Scalar Value can be used to represent:
-            * Accented letters
-            * Chinese characters
-            * Japanese characters
-            * Korean characters
-            * emoji
-            * zero-width spaces 
-
-    */
-
-    // Compound Types
-
-    /* 
+*/
     
-    Tuple 
+    fn five() -> i32 {
+        5
+    }
+    let x = five();
+    println!("The value of x is {x}");
     
-        Multiple types
-        Fixed length
-        Data allocated on the stack
+    let x = plus_one(5);
+    println!("The value of x is: {x}");
 
-        let x: (i32, f64, u8) = (500, 6.4, 1);
-        let five_hundred = x.0;
-        let six_point_four = x.1;
-        let one = x.2;
+}
 
-        let tup = (500, 6.4, 1);
-        let (x, y, z) = tup;
-        println!("The value of y is: {y}");
-    */
-    
-    /* 
-    
-    Array 
-    
-        One type only
-        Fixed length
-        Data allocated on the stack
-
-        let a = [1, 2, 3, 4, 5];
-        let a: [i32; 5] = [1, 2, 3, 4, 5];
-        let months = ["January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"];
-        let a = [3; 5]; // a = [3, 3, 3, 3, 3];
-        let first = a[0];
-        let second = a[1];
-
-        Note: Rust will panic if invalid index is accessed at runtime as it is
-            focused on memory-safety
-
-    */
-
+fn plus_one(x: i32) -> i32 {
+    x + 1
+    // it would be an error to say x + 1; here 
+    // b/c then it would not be an expression
 }
