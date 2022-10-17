@@ -1,59 +1,132 @@
-fn a_function(x: i32) {
-    println!("The value of x is {x}");
-}
 fn main() {
-/* Functions
 
-    fn keyword declares new functions
-    Uses snake case as convention for function & variable names
-    Functions are a series of statements optionally ending in an expression
-    Statements are instructions that perform an action & do not return a value.
-    Expressions evaluate to a resulting value.
-*/
+    // If else
 
-fn another_function() {
-    println!("Another function.");
-}
+    let number = 3;
 
-a_function(321);
-another_function();
-
-/* 
-Statements
-
-    Statements are instructions that perform an action & do not return a value.
-    Statements do not return values. 
-
-    let y = 6; // statement
-    fn main() { let y = 6; } // statement    
-    let x = (let y = 6); // ERROR cannot assign a statement to a statement
-
-Expressions 
-
-    Expressions evaluate to a resulting value.
-    Expressions do not include ending semicolons.
-    If you add a semicolon to the end of an expression, you turn it into a
-        statement, and it will then not return a value.
-    
-    5 + 6 // expression
-    6 // expression
-    { let x = 3; x + 1 } // expression
-
-*/
-    
-    fn five() -> i32 {
-        5
+    if number < 5 {
+        println!("condition was true");
+    } else {
+        println!("condition was false");
     }
-    let x = five();
-    println!("The value of x is {x}");
+
+    /*
+
+        Note: You must be explicit and always provide if with a Boolean as its
+            condition
+
+        Consider this example: 
+
+            let number = 3;
+            if number {
+                println!("number was three");
+            }
+            
+        Since number is an i32, it is not a bool
+        Since it is not a bool, Rust will not compile
+    */
+
+    if number != 0 {
+        println!("number was something other than zero");
+    }
+
+    if number % 4 == 0 {
+        println!("number is divisible by 4");
+    } else if number % 3 == 0 {
+        println!("number is divisible by 3");
+    } else if number % 2 == 0 {
+        println!("number is divisible by 2");
+    } else {
+        println!("number is not divisible by 4, 3, or 2");
+    }
+
+    let number = if true { 5 } else { 6 };
+    println!("The value of number is: {number}");
+    // let number = if condition { 5 } else { "six" }; ERROR types
+
+    // Loops
+    /*
+
+        There are three kinds of loops: 
+            * loop
+            * while
+            * for
+    */
+    /* loop
+
+        // runs forever until we explicitly tell it to stop
+        loop {
+            println!("again!");
+        }
+    */
     
-    let x = plus_one(5);
-    println!("The value of x is: {x}");
 
-}
+    let mut counter = 0;
 
-fn plus_one(x: i32) -> i32 {
-    x + 1
-    // it would be an error to say x + 1; here 
-    // b/c then it would not be an expression
+    let result = loop {
+        counter += 1;
+
+        if counter == 10 {
+            break counter * 2;
+        }
+    };
+
+    println!("The result is {result}");
+
+    // We can label loops
+
+    let mut count = 0;
+    'counting_up: loop {
+        println!("count = {count}");
+        let mut remaining = 10;
+
+        loop {
+            println!("remaining = {remaining}");
+            if remaining == 9 {
+                break;
+            }
+            if count == 2 {
+                break 'counting_up;
+            }
+            remaining -= 1;
+        }
+
+        count += 1;
+    }
+    println!("End count = {count}");
+
+    /* while
+
+        // checks a condition, can still run forever
+        let number = 3
+        while number != 0 {
+            println!("{number}!");
+        }
+    */
+    let mut number = 3;
+
+    while number != 0 {
+        println!("{number}!");
+
+        number -= 1;
+    }
+
+    println!("LIFTOFF!!!");
+    
+    /* for
+    */
+
+    let a = [10, 20, 30, 40, 50];
+
+    for element in a {
+        println!("the value is: {element}");
+    }
+
+    // (1..4) creates a range
+    // rev() is for reversing
+    for number in (1..4).rev() {
+        println!("{number}!");
+    }
+    println!("LIFTOFF!!!");
+
 }
