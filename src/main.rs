@@ -1,132 +1,76 @@
 fn main() {
 
-    // If else
-
-    let number = 3;
-
-    if number < 5 {
-        println!("condition was true");
-    } else {
-        println!("condition was false");
-    }
-
-    /*
-
-        Note: You must be explicit and always provide if with a Boolean as its
-            condition
-
-        Consider this example: 
-
-            let number = 3;
-            if number {
-                println!("number was three");
-            }
-            
-        Since number is an i32, it is not a bool
-        Since it is not a bool, Rust will not compile
-    */
-
-    if number != 0 {
-        println!("number was something other than zero");
-    }
-
-    if number % 4 == 0 {
-        println!("number is divisible by 4");
-    } else if number % 3 == 0 {
-        println!("number is divisible by 3");
-    } else if number % 2 == 0 {
-        println!("number is divisible by 2");
-    } else {
-        println!("number is not divisible by 4, 3, or 2");
-    }
-
-    let number = if true { 5 } else { 6 };
-    println!("The value of number is: {number}");
-    // let number = if condition { 5 } else { "six" }; ERROR types
-
-    // Loops
-    /*
-
-        There are three kinds of loops: 
-            * loop
-            * while
-            * for
-    */
-    /* loop
-
-        // runs forever until we explicitly tell it to stop
-        loop {
-            println!("again!");
-        }
-    */
+    // Temperatures between Fahrenheit and Celsius.
+    println!("32 degress Fahrenheit is {} degrees Celsius", f_to_c(32));
     
-
-    let mut counter = 0;
-
-    let result = loop {
-        counter += 1;
-
-        if counter == 10 {
-            break counter * 2;
-        }
-    };
-
-    println!("The result is {result}");
-
-    // We can label loops
-
-    let mut count = 0;
-    'counting_up: loop {
-        println!("count = {count}");
-        let mut remaining = 10;
-
-        loop {
-            println!("remaining = {remaining}");
-            if remaining == 9 {
-                break;
-            }
-            if count == 2 {
-                break 'counting_up;
-            }
-            remaining -= 1;
-        }
-
-        count += 1;
-    }
-    println!("End count = {count}");
-
-    /* while
-
-        // checks a condition, can still run forever
-        let number = 3
-        while number != 0 {
-            println!("{number}!");
-        }
-    */
-    let mut number = 3;
-
-    while number != 0 {
-        println!("{number}!");
-
-        number -= 1;
-    }
-
-    println!("LIFTOFF!!!");
+    // Generate the nth Fibonacci number.
+    println!("The 9th fibonacci number is {}", nth_fibonacci(9));
     
-    /* for
-    */
+    // Print the lyrics to the Christmas carol “The Twelve Days of Christmas,” taking advantage of the repetition in the song.
+    christmas_carol();
+}
 
-    let a = [10, 20, 30, 40, 50];
+fn f_to_c(temp_in_f: i32)-> i32{
+    (temp_in_f-32)*5/9
+}
 
-    for element in a {
-        println!("the value is: {element}");
+fn nth_fibonacci(n: u64) -> u64{
+    let mut a = 0;
+    let mut b = 1;
+    let mut c: u64;
+    if n ==0 {return a;}
+    for _ in 1..n{
+        c = a + b;
+        a = b;
+        b = c;
     }
+    b
+}
 
-    // (1..4) creates a range
-    // rev() is for reversing
-    for number in (1..4).rev() {
-        println!("{number}!");
+fn christmas_carol(){
+    let days = ["first", "second", "third", "fourth", "fifth", "sixth", 
+        "seventh", "eighth", "ninth", "tenth", "11th", "12th"];
+    let items = [
+        "A song and a Christmas tree",
+        "Two candy canes",
+        "Three boughs of holly",
+        "Four colored lights",
+        "A shining star",
+        "Little silver bells",
+        "Candles a-glowing",
+        "Gold and silver tinsel",
+        "A guardian angel",
+        "Some mistletoe",
+        "Gifts for one and all",
+        "All their good wishes",
+    ];
+    
+    let second_line = "My good friends brought to me";
+
+    let pre_first_line = "On the ";
+    let post_first_line = " day of Christmas";
+
+    // After the first verse, we want the last line of each verse to be 
+    //   "And a song and a Christmas tree" 
+    let mut last_line = String::from("And ")+items[0];
+    last_line = last_line.replace(" A ", " a ");
+
+    let mut daily_items: Vec<String> = Vec::new();
+
+    for i in 0..days.len(){
+        if i == 1 {
+            daily_items[0]=last_line.clone();
+        }
+        daily_items.insert(0, String::from(items[i]));
+        
+        println!(
+            "{}{}{}\n{}\n{}\n",
+            pre_first_line,
+            days[i],
+            post_first_line, 
+            second_line,
+            daily_items.join("\n")
+        );
+        
     }
-    println!("LIFTOFF!!!");
-
 }
