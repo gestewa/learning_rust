@@ -1,74 +1,75 @@
 fn main() {
-    /* Borrowing 
-    
-    Refrences: mutible, immutible, dangling
-    
-    You may only have one mutible refrence at one time.
-    You may have as many immutible refrences as you would like at one time.
+    /* Slices
+        
+        A slice is a refrence and DOES NOT have ownership of the memory
+        So it is an immutible refrence
+        
+        let a_str: &str = "Hello"; // This is a string literal
+        let a_string: String = String::from("Hello");
+        let a_slice: &str = &a_str[..]; // This is a slice
+        let b_slice: &str = &a_string[..]; // This is a slice
 
-    You may not have immutible and mutible refrences at one time
-    This is because the immutible refrence(s) should not have to to concern 
-        themselves with the data changing out from under them unexpetedly
+        A string literal is a slice
 
-    A dangling refrnece occurs when you have a refrence (pointer) to a value 
-        which has been deallocated. Rust does not allow this, see dangle()
-    
     */
 
-    let s1 = String::from("hello");
+    // A look into a world without slices
 
-    let len = calculate_length(&s1);
+    let mut s = String::from("hello world");
 
-    println!("The length of '{}' is {}.", s1, len);
+    let word = first_word_end_index(&s); // word will get the value 5
+
+    s.clear(); // this empties the String, making it equal to ""
+
+    // word still has the value 5 here, but there's no more string that
+    // we could meaningfully use the value 5 with. word is now totally invalid!
+    println!("{word} word");
+
+    // A look into a world with slices
+
+    let s = String::from("hello world");
+
+    let hello = &s[0..5];
+    println!("{hello}");
+    let world = &s[6..11];
+    println!("{world}");
+    let whole= &s[..]; // a slice of the whole string
+
+    let fw = first_word(&s);
+    println!("{fw}");
+    let fw = first_word(whole);
+    println!("{fw}");
 
 
-    let mut s = String::from("hello");
+    let a = [1, 2, 3, 4, 5];
 
-    let r1 = &s;
-    calculate_length(r1);
-    calculate_length(&s);
-    calculate_length(&s);
-    let r1 = "cat";
-    change(&mut s);
-    change(&mut s);
-    println!("{s} s");
-    println!("{r1} r1");
-      let r1 = &s; // no problem
-    let r2 = &s; // no problem
-    println!("{} and {}", r1, r2);
-    // variables r1 and r2 will not be used after this point
+    let slice = &a[1..3];
 
-    let r3 = &mut s; // no problem
-    println!("{}", r3);
-      let r1 = &s; // no problem
-    let r2 = &s; // no problem
-    println!("{} and {}", r1, r2);
-    // variables r1 and r2 will not be used after this point
+    assert_eq!(slice, &[2, 3]);
 
-    let r3 = &mut s; // no problem
-    println!("{}", r3);
 }
 
-// a function which does not get ownership of a string
-fn calculate_length(s: &String) -> usize { // s is pointer/reference to a String
+fn first_word_end_index(s: &String) -> usize {
+    let bytes = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return i;
+        }
+    }
+
     s.len()
-}// Here, s goes out of scope. But because it does not have ownership of what
-  // it refers to, it is not dropped.
-
-  fn change(some_string: &mut String) {
-    some_string.push_str(", world");
 }
 
-// fn dangle() -> &String { // dangle returns a reference to a String
+fn first_word(s: &str) -> &str {
+    let bytes
+ = s.as_bytes();
 
-//     let s = String::from("hello"); // s is a new String
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[0..i];
+        }
+    }
 
-//     &s // we return a reference to the String, s
-// } // Here, s goes out of scope, and is dropped. Its memory goes away.
-//   // Danger!
-
-fn no_dangle() -> String {
-    let s = String::from("hello");
-
-    s
+    &s[..]
 }
